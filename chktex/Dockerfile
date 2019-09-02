@@ -1,4 +1,4 @@
-FROM dockershelf/latex:full
+FROM dockershelf/latex:basic
 
 LABEL "com.github.actions.name"="LaTeX linter (chktex)"
 LABEL "com.github.actions.description"="Detect mistakes in a LaTeX document"

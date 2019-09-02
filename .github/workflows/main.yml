@@ -1,0 +1,11 @@
+name: A workflow for linting a LaTeX file
+on: pull_request
+jobs:
+  lint:
+    name: Lint with chktex
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: ./chktex
+      env:
+        TEX_MAIN: "main.tex"

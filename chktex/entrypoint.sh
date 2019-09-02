@@ -2,8 +2,12 @@
 
 set -eu
 
+# TODO: build a map from file to errors, only process files that were
+# changed in the context PR
 if [[ -z "$TEX_MAIN" ]]; then
-  TEX_MAIN="--version"
+  echo "Set the TEX_MAIN env variable to choose which file to lint."
+  exit 1
 fi
 
-chktex $TEX_MAIN
+# use path.join in python
+chktex "$GITHUB_WORKSPACE/$TEX_MAIN"

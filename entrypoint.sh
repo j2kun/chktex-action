@@ -1,7 +1,7 @@
 #!/bin/bash
-set -o pipefail
+set -euf -o pipefail
 
-FILES=$(git ls-files --full-name | grep "\.tex$")
+FILES=$(git ls-files --full-name | grep "\.tex$" || true)
 
 if [ -z "$FILES" ]
 then
@@ -15,7 +15,7 @@ fi
 # combine the output into a single string, and fail if that string is nonempty
 OUTPUT=""
 
-for line in
+echo "$FILES" | while read line
 do
     # -q suppresses version information
     OUTPUT+=$(chktex -q "$GITHUB_WORKSPACE/$line")

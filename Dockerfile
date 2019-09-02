@@ -1,7 +1,7 @@
 FROM debian:jessie
 
 LABEL "com.github.actions.name"="LaTeX linter (chktex)"
-LABEL "com.github.actions.description"="Detect mistakes in a LaTeX document"
+LABEL "com.github.actions.description"="Detect stylistic errors in a LaTeX document"
 LABEL "com.github.actions.icon"="edit"
 LABEL "com.github.actions.color"="yellow"
 

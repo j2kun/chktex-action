@@ -1,6 +1,6 @@
-#!/bin/sh -l
-
-set -eu
+#!/bin/bash
+set -e
+set -o pipefail
 
 # TODO: build a map from file to errors, only process files that were
 # changed in the context PR

@@ -13,8 +13,8 @@ fi
 # instead it always exits with status 0. Here we check if the output is empty
 # and if not, print the linter errors and exit 1.
 
-# -q suppressed version information
-OUTPUT=$(chktex -q "$GITHUB_WORKSPACE/$TEX_MAIN")
+# -q suppresses version information
+OUTPUT=$(for line in $(git ls-files --full-name | grep "\.tex$"); do; chktex -q "$GITHUB_WORKSPACE/$TEX_MAIN"; done)
 
 if [[ $OUTPUT ]]; then
     echo "$OUTPUT"

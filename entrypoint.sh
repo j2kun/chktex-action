@@ -1,13 +1,25 @@
 #!/bin/bash
-set -e
 set -o pipefail
 
-# chktex doesn't have the proper exit status when it reports linter issues,
-# instead it always exits with status 0. Here we check if the output is empty
-# and if not, print the linter errors and exit 1.
+FILES=$(git ls-files --full-name | grep "\.tex$")
 
-# -q suppresses version information
-OUTPUT=$(for line in $(git ls-files --full-name | grep "\.tex$"); do; chktex -q "$GITHUB_WORKSPACE/$line"; done)
+if [ -z "$FILES" ]
+then
+      echo "Found no files to lint; ran 'git ls-files --full-name | grep \"\.tex$\"'"
+      exit 0
+fi
+
+
+# chktex doesn't have the proper exit status when it reports linter issues,
+# instead it always exits with status 0. So we run chktex on each file in the repo,
+# combine the output into a single string, and fail if that string is nonempty
+OUTPUT=""
+
+for line in
+do
+    # -q suppresses version information
+    OUTPUT+=$(chktex -q "$GITHUB_WORKSPACE/$line")
+done
 
 if [[ $OUTPUT ]]; then
     echo "$OUTPUT"

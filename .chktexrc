@@ -1,0 +1,16 @@
+# See Error 38, which asserts commas must be before or after quotes
+# The style I use is "before quotes," as in this sentence.
+QuoteStyle = Traditional
+
+# Exclude these environments from syntax checking
+VerbEnvir { lstlisting }
+
+# Ignore the contents of commands whose arguments do not produce
+# visible output or whose output is not subject to style
+WipeArg
+{
+    \label:{} \ref:{} \vref:{} \pageref:{} \index:{} \cite:[]{}
+    \input:{} \verbatiminput:[]{} \listinginput:[]{}{}
+    \verbatimtabinput:[]{} \include:{} \includeonly:{}
+    \bibitem:[]{} \texttt:{} \verb:{} \includegraphics:[]{}
+}

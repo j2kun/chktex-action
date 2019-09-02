@@ -9,5 +9,14 @@ if [[ -z "$TEX_MAIN" ]]; then
   exit 1
 fi
 
-# use path.join in python
-chktex "$GITHUB_WORKSPACE/$TEX_MAIN"
+# chktex doesn't have the proper exit status when it reports linter issues,
+# instead it always exits with status 0. Here we check if the output is empty
+# and if not, print the linter errors and exit 1.
+
+# -q suppressed version information
+OUTPUT=$(chktex -q "$GITHUB_WORKSPACE/$TEX_MAIN")
+
+if [[ $OUTPUT ]]; then
+    echo "$OUTPUT"
+    exit 1
+fi

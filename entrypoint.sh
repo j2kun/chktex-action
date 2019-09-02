@@ -17,12 +17,16 @@ OUTPUT=""
 
 echo "$FILES" | while read line
 do
-    # -q suppresses version information
-    echo "Linting $line"
-    OUTPUT+=$(chktex -q "$GITHUB_WORKSPACE/$line")
+    CHKTEX_ARG="$GITHUB_WORKSPACE/$line"
+    echo "Linting $CHKTEX_ARG"
+
+    # -q suppresses version information so that empty output means it lints
+    SINGLE_CMD_OUTPUT=$(chktex -q "$CHKTEX_ARG")
+
+    echo "$SINGLE_CMD_OUTPUT"
+    OUTPUT+="$SINGLE_CMD_OUTPUT"
 done
 
 if [[ $OUTPUT ]]; then
-    echo "$OUTPUT"
     exit 1
 fi

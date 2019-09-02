@@ -18,6 +18,7 @@ OUTPUT=""
 echo "$FILES" | while read line
 do
     # -q suppresses version information
+    echo "Linting $line"
     OUTPUT+=$(chktex -q "$GITHUB_WORKSPACE/$line")
 done
 

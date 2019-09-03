@@ -9,13 +9,13 @@ LABEL "repository"="http://github.com/j2kun/chktex-action"
 LABEL "homepage"="http://github.com/j2kun"
 LABEL "maintainer"="Jeremy Kun <j2kun@users.noreply.github.com>"
 
-WORKDIR /usr/src/app
 RUN apt update
 RUN apt install -y chktex python3.7 python3-pip
 
+WORKDIR /tmp/action
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
 
 COPY . .
 
-CMD [ "python3", "./run_action.py" ]
+CMD [ "python3", "/tmp/action/run_action.py" ]

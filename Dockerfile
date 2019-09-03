@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:buster
 
 LABEL "com.github.actions.name"="LaTeX linter (chktex)"
 LABEL "com.github.actions.description"="Detect stylistic errors in a LaTeX document"
@@ -10,11 +10,12 @@ LABEL "homepage"="http://github.com/j2kun"
 LABEL "maintainer"="Jeremy Kun <j2kun@users.noreply.github.com>"
 
 WORKDIR /usr/src/app
-RUN apt-get update && apt-get install -y chktex python3 python3-pip
+RUN apt update
+RUN apt install -y chktex python3.7 python3-pip
 
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "./run_action.py" ]
+CMD [ "python3", "./run_action.py" ]

@@ -1,5 +1,5 @@
-from subprocess import check_output
 import os
+import subprocess
 import sys
 
 from github import Github
@@ -43,10 +43,12 @@ num_linter_errors = 0
 
 for filename in files_to_process:
     print("Linting %s\n" % filename)
-    out = check_output(["chktex", "-q", filename], text=True)
-    if out:
+    completed_process = subprocess.run(["chktex", "-q", filename], capture_output=True, text=True, check=False)
+    stdout = completed_process.stdout
+
+    if stdout:
         num_linter_errors += 1
-        print(out)
+        print(stdout)
 
 if num_linter_errors > 0:
     sys.exit(1)

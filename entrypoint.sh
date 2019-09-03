@@ -2,7 +2,7 @@
 set -euf -o pipefail
 
 cd "$GITHUB_WORKSPACE"
-FILES=$(git ls-files --full-name | grep "\.tex$" || true)
+FILES=$(find . -type f -name "*.tex")
 
 if [ -z "$FILES" ]
 then

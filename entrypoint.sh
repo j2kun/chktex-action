@@ -1,13 +1,14 @@
 #!/bin/bash
 set -euf -o pipefail
 
+cd "$GITHUB_WORKSPACE"
 FILES=$(git ls-files --full-name | grep "\.tex$" || true)
 
 if [ -z "$FILES" ]
 then
       echo "Found no files to lint; ran 'git ls-files --full-name | grep \"\.tex$\"'"
       echo "Output of ls:"
-      echo "$(ls $GITHUB_WORKSPACE)"
+      echo "$(ls)"
       echo "pwd=$(pwd)"
       exit 0
 fi
@@ -18,13 +19,12 @@ fi
 # combine the output into a single string, and fail if that string is nonempty
 OUTPUT=""
 
-echo "$FILES" | while read line
+echo "$FILES" | while read file
 do
-    CHKTEX_ARG="$GITHUB_WORKSPACE/$line"
-    echo "Linting $CHKTEX_ARG"
+    echo "Linting $file"
 
     # -q suppresses version information so that empty output means it lints
-    SINGLE_CMD_OUTPUT=$(chktex -q "$CHKTEX_ARG")
+    SINGLE_CMD_OUTPUT=$(chktex -q "$file")
 
     echo "$SINGLE_CMD_OUTPUT"
     OUTPUT+="$SINGLE_CMD_OUTPUT"

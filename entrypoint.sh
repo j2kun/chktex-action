@@ -6,6 +6,9 @@ FILES=$(git ls-files --full-name | grep "\.tex$" || true)
 if [ -z "$FILES" ]
 then
       echo "Found no files to lint; ran 'git ls-files --full-name | grep \"\.tex$\"'"
+      echo "Output of ls:"
+      echo "$(ls $GITHUB_WORKSPACE)"
+      echo "pwd=$(pwd)"
       exit 0
 fi
 

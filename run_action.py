@@ -1,5 +1,7 @@
+from subprocess import check_output
 import os
 import sys
+
 from github import Github
 
 SKIP_DIRS = set(['venv', '.git', '__pycache__'])
@@ -36,5 +38,15 @@ if not files_to_process:
         print(filename)
     sys.exit(1)
 
+
+num_linter_errors = 0
+
 for filename in files_to_process:
-    print("Linting %s" % filename)
+    print("Linting %s\n" % filename)
+    out = check_output(["chktex", "-q", filename], text=True)
+    if out:
+        num_linter_errors += 1
+        print(out)
+
+if num_linter_errors > 0:
+    sys.exit(1)

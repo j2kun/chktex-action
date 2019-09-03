@@ -36,7 +36,7 @@ if not files_to_process:
     print("Complete tree found:")
     for filename in all_files_in_tree:
         print(filename)
-    sys.exit(1)
+    sys.exit(0)
 
 
 num_linter_errors = 0

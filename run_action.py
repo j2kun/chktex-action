@@ -2,8 +2,6 @@ import os
 import subprocess
 import sys
 
-from github import Github
-
 SKIP_DIRS = set(['venv', '.git', '__pycache__'])
 
 
@@ -12,13 +10,7 @@ if not GITHUB_WORKSPACE:
     print("No GITHUB_WORKSPACE environment variable set.")
     sys.exit(1)
 
-GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
-if not GITHUB_TOKEN:
-    print("No GITHUB_TOKEN environment variable set.")
-    sys.exit(1)
-
 os.chdir(GITHUB_WORKSPACE)
-g = Github(GITHUB_TOKEN)
 
 all_files_in_tree = []
 for root, dirs, files in os.walk(".", topdown=True):

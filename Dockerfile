@@ -9,8 +9,10 @@ LABEL "repository"="http://github.com/j2kun/chktex-action"
 LABEL "homepage"="http://github.com/j2kun"
 LABEL "maintainer"="Jeremy Kun <j2kun@users.noreply.github.com>"
 
-RUN apt update
-RUN apt install -y chktex python3.7 python3-pip
+RUN apt-get update && apt-get install -y \
+  chktex \
+  python3.7 \
+  python3-pip
 
 WORKDIR /tmp/action
 COPY requirements.txt ./

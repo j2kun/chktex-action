@@ -1,0 +1,9 @@
+name: LaTeX linter (chktex)
+author: Jeremy Kun
+description: Lint your LaTeX files with chktex
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'edit'
+  color: 'yellow'

@@ -1,3 +1,5 @@
+"""Find all *tex files and run chktex on them"""
+
 import os
 import subprocess
 import sys
@@ -12,6 +14,7 @@ if not GITHUB_WORKSPACE:
 
 
 def main():
+    """main function"""
     os.chdir(GITHUB_WORKSPACE)
 
     all_files_in_tree = []
@@ -34,21 +37,30 @@ def main():
             print(filename)
         sys.exit(0)
 
-    num_linter_errors = 0
+    files_with_errors = 0
 
     for filename in files_to_process:
-        print("Linting %s\n" % filename)
+        print(f"Linting {filename}", end="\n\n")
+
+        directory = os.path.dirname(filename)
+
+        # run process inside the file's folder
         completed_process = subprocess.run(
-            ["chktex", "-q", filename], capture_output=True, text=True, check=False
+            ["chktex", "-q", filename],
+            cwd=directory,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         stdout = completed_process.stdout
 
         if stdout:
-            num_linter_errors += 1
+            files_with_errors += 1
             print(stdout)
+        else:
+            print("No warnings found", end="\n\n")
 
-    if num_linter_errors > 0:
-        sys.exit(1)
+    sys.exit(files_with_errors)
 
 
 if __name__ == "__main__":

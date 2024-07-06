@@ -1,4 +1,4 @@
-certifi==2024.2.2
+certifi==2024.7.4
 chardet==5.2.0
 Deprecated==1.2.14
 idna==3.7

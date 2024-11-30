@@ -1,38 +1,35 @@
-# Lint your LaTeX files with chktex
+# ChkTeX Action
 
-[chktex](https://www.nongnu.org/chktex/) is a LaTeX linter. A _linter_ is a
-program that checks your work for stylistic errors. In the case of LaTeX, style
-errors include soft tex-O's (which don't generate errors) and decisions that
-result in rendering irregularities.
+## _Lint your LaTeX files with ChkTeX_
 
-This action runs chktex on all `.tex` files in your repository.
+[ChkTeX](https://www.nongnu.org/chktex/) is a LaTeX linter.
+A _linter_ is a program that checks your work for stylistic errors.
+In the case of LaTeX, style errors include soft tex-O's (which don't generate errors) and decisions that result in
+rendering irregularities.
 
-To configure the linter, add a `.chktexrc` file to your repository. An example
-is provided in this repo.
+This action runs ChkTeX on all `.tex` files in your repository.
 
-Example configuration: https://gist.github.com/j2kun/aa4a768150d423f581b758103b2b020c
+To configure the ChkTeX, add a `.chktexrc` file to your repository.
+An example is provided in this repo.
+If no local repository `.chktexrc` file can be found, the action will use the global ChkTeX configuration distributed as
+part of the ChkTeX software that runs in the Action container.
 
-```
-# in .github/workflows/lint.yml
+To use this action in your repository, add it to your custom workflow.
+See an example below:
 
+```yml
 name: Lint
-
-on: 
+on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-
 jobs:
-  build:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: LaTeX linter (chktex)
-      uses: j2kun/chktex-action@main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run ChkTeX
+        uses: j2kun/chktex-action@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```

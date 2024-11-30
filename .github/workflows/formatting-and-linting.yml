@@ -10,7 +10,7 @@ jobs:
       - name: Set Up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.12
+          python-version: 3.13
       - name: Install Packages
         run: |
           python3 -m pip install --upgrade pip

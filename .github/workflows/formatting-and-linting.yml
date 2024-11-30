@@ -1,0 +1,25 @@
+name: Formatting and Linting
+on: pull_request
+jobs:
+  formatting-and-linting:
+    name: Formatting and Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - name: Install Packages
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pylint
+      - name: Run Black
+        uses: psf/black@stable
+      - name: Run Flake8
+        uses: py-actions/flake8@v2
+      - name: Run Pylint
+        run: pylint .
+      - name: Run Ruff
+        uses: astral-sh/ruff-action@v1

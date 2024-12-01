@@ -46,10 +46,10 @@ def find_chktexrc(github_workspace_path=None):
     """
 
     os.chdir(github_workspace_path)
-    locale_chktexrc = os.path.abspath(".chktexrc")
+    local_chktexrc = os.path.abspath(".chktexrc")
 
-    if os.path.exists(locale_chktexrc):
-        return locale_chktexrc
+    if os.path.exists(local_chktexrc):
+        return local_chktexrc
 
     return None
 

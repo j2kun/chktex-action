@@ -1,0 +1,44 @@
+name: Build and Test ChkTeX Action Image
+on: pull_request
+env:
+  TEST_TAG: j2kun/chktex-action:test
+jobs:
+  build-and-test-image:
+    name: Build and Test ChkTeX Action Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Extract Metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Set Up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: ${{ env.TEST_TAG }}
+          labels: ${{ steps.meta.outputs.labels }}
+      - name: Test Image
+        id: test
+        run: |
+          docker run --rm \
+          -v $(pwd):$(pwd) \
+          -v $GITHUB_OUTPUT:$GITHUB_OUTPUT \
+          -e GITHUB_WORKSPACE=$(pwd) \
+          -e GITHUB_OUTPUT=$GITHUB_OUTPUT \
+          --entrypoint /entrypoint.sh \
+          ${{ env.TEST_TAG }}
+        continue-on-error: true
+      - name: Check If ChkTeX Reports Errors
+        if: ${{ steps.test.outputs.number-of-failed-files == 1 }}
+        run: |
+          echo ::error ::Number of Errors: ${{ steps.test.outputs.number-of-failed-files }}
+          exit 0

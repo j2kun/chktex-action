@@ -1,9 +1,10 @@
-name: LaTeX linter (chktex)
+name: ChkTeX Action
 author: Jeremy Kun
-description: Lint your LaTeX files with chktex
+description: Lint your LaTeX files with ChkTeX
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: docker
+  image: docker://ghcr.io/j2kun/chktex-action:latest
+  entrypoint: /entrypoint.sh
 branding:
-  icon: 'edit'
-  color: 'yellow'
+  icon: edit
+  color: yellow

@@ -1,0 +1,13 @@
+services:
+  python:
+    image: ${COMPOSE_PROJECT_NAME}:latest
+    build:
+      context: .
+    tty: true
+    volumes:
+      - ./:/usr/src/${COMPOSE_PROJECT_NAME}
+  blackd:
+    image: pyfound/black:latest_release
+    command: sh -c "pip install black[d] && blackd --bind-host 0.0.0.0"
+    ports:
+      - "45484:45484"

@@ -1,26 +1,42 @@
-FROM ubuntu:latest
+FROM ubuntu:latest AS builder
 
-LABEL "com.github.actions.name"="LaTeX linter (chktex)"
-LABEL "com.github.actions.description"="Detect stylistic errors in a LaTeX document"
-LABEL "com.github.actions.icon"="edit"
-LABEL "com.github.actions.color"="yellow"
+ENV CHKTEX_VERSION=1.7.9
 
-LABEL "repository"="http://github.com/j2kun/chktex-action"
-LABEL "homepage"="http://github.com/j2kun"
-LABEL "maintainer"="Jeremy Kun <j2kun@users.noreply.github.com>"
+RUN set -eux; \
+    \
+    apt-get update; \
+    apt-get upgrade -y; \
+    apt-get install -y \
+    build-essential \
+    libpcre2-posix3 \
+    libpcre2-dev \
+    curl \
+    ; \
+    cd tmp/; \
+    curl -sLO http://download.savannah.gnu.org/releases/chktex/chktex-${CHKTEX_VERSION}.tar.gz; \
+    tar -xzf chktex-${CHKTEX_VERSION}.tar.gz; \
+    cd chktex-${CHKTEX_VERSION}/; \
+    ./configure; \
+    make; \
+    sed -i '/^install:/ s/ ChkTeX.dvi//' Makefile; \
+    make install
 
-WORKDIR /tmp/action
+FROM python:alpine
 
-COPY requirements.txt .
+LABEL com.github.actions.name="ChkTeX Action"
+LABEL com.github.actions.description="Lint your LaTeX files with ChkTeX"
+LABEL com.github.actions.icon="edit"
+LABEL com.github.actions.color="yellow"
+LABEL repository="https://github.com/j2kun/chktex-action"
+LABEL homepage="https://github.com/j2kun"
+LABEL maintainer="Jeremy Kun <j2kun@users.noreply.github.com>"
 
-RUN apt-get update -yqq && \
-  apt-get install -yqq \
-  chktex \
-  python3.7 \
-  python3-pip && \
-  rm -rf /var/lib/apt/lists/* && \
-  pip3 install --break-system-packages -r requirements.txt
+COPY --from=builder /usr/local/bin/chktex /usr/local/bin/
+COPY --from=builder /usr/local/etc/chktexrc /usr/local/etc/
+COPY run_action.py /usr/src/chktex-action/
+COPY entrypoint.sh /
 
-COPY . .
-
-CMD [ "python3", "/tmp/action/run_action.py" ]
+RUN set -eux; \
+    \
+    apk add --no-cache \
+    gcompat

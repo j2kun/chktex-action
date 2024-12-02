@@ -7,8 +7,8 @@ line-length = 88
 
 [tool.poetry]
 name = "chktex-action"
-version = "0.1.0"
-description = ""
+version = "2.0.0"
+description = "Lint your LaTeX files with ChkTeX"
 authors = ["Jeremy Kun <j2kun@users.noreply.github.com>", "Martin Kedmenec"]
 readme = "README.md"
 

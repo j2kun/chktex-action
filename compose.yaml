@@ -3,9 +3,13 @@ services:
     image: ${COMPOSE_PROJECT_NAME}:latest
     build:
       context: .
+      target: development
+    environment:
+      GITHUB_WORKSPACE: /usr/src/${COMPOSE_PROJECT_NAME}/
+      GITHUB_STEP_SUMMARY: /usr/src/${COMPOSE_PROJECT_NAME}/github-step-summary.md
     tty: true
     volumes:
-      - ./:/usr/src/${COMPOSE_PROJECT_NAME}
+      - ./:/usr/src/${COMPOSE_PROJECT_NAME}/
   blackd:
     image: pyfound/black:latest_release
     command: sh -c "pip install black[d] && blackd --bind-host 0.0.0.0"

@@ -20,6 +20,6 @@ jobs:
       - name: Run Flake8
         uses: py-actions/flake8@v2
       - name: Run Pylint
-        run: pylint .
+        run: pylint src/chktex_action/
       - name: Run Ruff
         uses: astral-sh/ruff-action@v1

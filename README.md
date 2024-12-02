@@ -10,7 +10,6 @@ rendering irregularities.
 This action runs ChkTeX on all `.tex` files in your repository.
 
 To configure the ChkTeX, add a `.chktexrc` file to your repository.
-An example is provided in this repo.
 If no local repository `.chktexrc` file can be found, the action will use the global ChkTeX configuration distributed as
 part of the ChkTeX software that runs in the Action container.
 
@@ -19,8 +18,7 @@ See an example below:
 
 ```yml
 name: Lint
-on:
-  push:
+on: push
 jobs:
   lint:
     name: Lint
@@ -29,7 +27,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Run ChkTeX
-        uses: j2kun/chktex-action@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: j2kun/chktex-action@v2
 ```

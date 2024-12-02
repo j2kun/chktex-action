@@ -31,14 +31,9 @@ jobs:
         run: |
           docker run --rm \
           -v $(pwd):$(pwd) \
-          -v $GITHUB_OUTPUT:$GITHUB_OUTPUT \
+          -v $GITHUB_STEP_SUMMARY:$GITHUB_STEP_SUMMARY \
           -e GITHUB_WORKSPACE=$(pwd) \
-          -e GITHUB_OUTPUT=$GITHUB_OUTPUT \
+          -e GITHUB_STEP_SUMMARY=$GITHUB_STEP_SUMMARY \
           --entrypoint /entrypoint.sh \
           ${{ env.TEST_TAG }}
         continue-on-error: true
-      - name: Check If ChkTeX Reports Errors
-        if: ${{ steps.test.outputs.number-of-failed-files == 1 }}
-        run: |
-          echo ::error ::Number of Errors: ${{ steps.test.outputs.number-of-failed-files }}
-          exit 0

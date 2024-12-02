@@ -1,4 +1,4 @@
-FROM ubuntu:latest AS builder
+FROM ubuntu:latest AS chktex_builder
 
 ENV CHKTEX_VERSION=1.7.9
 
@@ -18,8 +18,32 @@ RUN set -eux; \
     cd chktex-${CHKTEX_VERSION}/; \
     ./configure; \
     make; \
+    # Disable the documentation building
     sed -i '/^install:/ s/ ChkTeX.dvi//' Makefile; \
     make install
+
+FROM python:alpine AS development
+
+WORKDIR /usr/src/chktex-action/
+
+COPY poetry.lock poetry.toml pyproject.toml README.md ./
+COPY --from=chktex_builder /usr/local/bin/chktex /usr/local/bin/
+COPY --from=chktex_builder /usr/local/etc/chktexrc /usr/local/etc/
+
+RUN set -eux; \
+    \
+    apk add --no-cache \
+    gcompat \
+    ; \
+    pip install --no-cache-dir \
+    poetry \
+    poetry-plugin-export \
+    ; \
+    poetry install
+
+FROM development AS production_builder
+
+RUN poetry export --without-hashes -o requirements.txt
 
 FROM python:alpine
 
@@ -31,12 +55,19 @@ LABEL repository="https://github.com/j2kun/chktex-action"
 LABEL homepage="https://github.com/j2kun"
 LABEL maintainer="Jeremy Kun <j2kun@users.noreply.github.com>"
 
-COPY --from=builder /usr/local/bin/chktex /usr/local/bin/
-COPY --from=builder /usr/local/etc/chktexrc /usr/local/etc/
-COPY run_action.py /usr/src/chktex-action/
+WORKDIR /usr/src/chktex-action/
+
+COPY --from=chktex_builder /usr/local/bin/chktex /usr/local/bin/
+COPY --from=chktex_builder /usr/local/etc/chktexrc /usr/local/etc/
+COPY --from=production_builder /usr/src/chktex-action/requirements.txt ./
 COPY entrypoint.sh /
 
 RUN set -eux; \
     \
     apk add --no-cache \
-    gcompat
+    gcompat \
+    ; \
+    pip install --no-cache-dir \
+    -r requirements.txt
+
+COPY src/ src/

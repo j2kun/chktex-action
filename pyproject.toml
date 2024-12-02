@@ -1,0 +1,26 @@
+[project]
+name = "chktex-action"
+requires-python = ">=3.13"
+
+[tool.black]
+line-length = 88
+
+[tool.poetry]
+name = "chktex-action"
+version = "0.1.0"
+description = ""
+authors = ["Jeremy Kun <j2kun@users.noreply.github.com>", "Martin Kedmenec"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+pygithub = "^2.5.0"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.1.1"
+pylint = "^3.3.1"
+ruff = "^0.8.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

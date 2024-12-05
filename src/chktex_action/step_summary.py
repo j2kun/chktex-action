@@ -5,17 +5,13 @@ Generates formatted Markdown for errors and writes it to the GitHub Actions step
 summary.
 """
 
-from os import environ
-from typing import List
-from chktex import Error
+import os
+from typing import TYPE_CHECKING
 
-HEADER_MARKDOWN = """## ChkTeX Action Summary
+if TYPE_CHECKING:
+    from chktex import Error
 
-Total files: {0}, total errors: {1}, total warnings: {2}
-
-"""
-
-ERROR_MARKDOWN = """### File: {0}
+ERROR_MARKDOWN = """### Path: {0}
 
 - **Type**: {1} {2}
 - **Line**: {3}
@@ -26,12 +22,7 @@ ERROR_MARKDOWN = """### File: {0}
 """
 
 
-def build_markdown_step_summary(
-    errors: List[Error],
-    number_of_files: int,
-    number_of_errors: int,
-    number_of_warnings: int,
-) -> str:
+def build_markdown_step_summary(errors: list["Error"], analysis_string: str) -> str:
     """
     Builds a Markdown summary from the list of ChkTeX errors.
 
@@ -51,8 +42,8 @@ def build_markdown_step_summary(
 
         formatted_errors.append(
             ERROR_MARKDOWN.format(
-                error.file,
-                error.type,
+                error.path,
+                error.level,
                 error.number,
                 error.line,
                 error.message,
@@ -60,9 +51,7 @@ def build_markdown_step_summary(
             )
         )
 
-    return HEADER_MARKDOWN.format(
-        number_of_files, number_of_errors, number_of_warnings
-    ) + "\n".join(formatted_errors)
+    return f"{analysis_string}\n" + "\n".join(formatted_errors)
 
 
 def write_step_summary(step_summary: str) -> None:
@@ -70,7 +59,7 @@ def write_step_summary(step_summary: str) -> None:
     Writes the provided Markdown summary to the `GITHUB_STEP_SUMMARY` file.
     """
 
-    with open(
-        environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8"
-    ) as github_step_summary:
-        github_step_summary.write(step_summary)
+    step_summary_file: str = os.environ.get("GITHUB_STEP_SUMMARY", "")
+
+    with open(step_summary_file, "a", encoding="utf-8") as github_step_summary:
+        github_step_summary.write("## ChkTeX Action Summary\n" + step_summary)

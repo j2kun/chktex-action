@@ -30,10 +30,5 @@ jobs:
         id: test
         run: |
           docker run --rm \
-          -v $(pwd):$(pwd) \
-          -v $GITHUB_STEP_SUMMARY:$GITHUB_STEP_SUMMARY \
-          -e GITHUB_WORKSPACE=$(pwd) \
-          -e GITHUB_STEP_SUMMARY=$GITHUB_STEP_SUMMARY \
-          --entrypoint /entrypoint.sh \
           ${{ env.TEST_TAG }}
         continue-on-error: true

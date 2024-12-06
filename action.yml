@@ -4,7 +4,15 @@ description: Lint your LaTeX files with ChkTeX
 runs:
   using: docker
   image: docker://ghcr.io/j2kun/chktex-action:latest
-  entrypoint: /entrypoint.sh
+inputs:
+  github-token:
+    description: GitHub token
+    required: false
+    default: ${{ github.token }}
+  lint-all:
+    description: Force lint of all files in the repository.
+    required: false
+    default: 'false'
 branding:
   icon: edit
   color: yellow

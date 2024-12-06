@@ -7,11 +7,12 @@ services:
     environment:
       GITHUB_WORKSPACE: /usr/src/${COMPOSE_PROJECT_NAME}/
       GITHUB_STEP_SUMMARY: /usr/src/${COMPOSE_PROJECT_NAME}/github-step-summary.md
+      RUNNER_DEBUG: true
     tty: true
     volumes:
       - ./:/usr/src/${COMPOSE_PROJECT_NAME}/
   blackd:
     image: pyfound/black:latest_release
-    command: sh -c "pip install black[d] && blackd --bind-host 0.0.0.0"
+    command: sh -c "python3 -m pip install black[d] && blackd --bind-host 0.0.0.0"
     ports:
       - "45484:45484"

@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Docker" type="PyRemoteDebugConfigurationType" factoryName="Python Remote Debug">
+    <module name="chktex-action" />
+    <option name="PORT" value="4567" />
+    <option name="HOST" value="host.docker.internal" />
+    <PathMappingSettings>
+      <option name="pathMappings">
+        <list>
+          <mapping local-root="$PROJECT_DIR$/src/chktex_action" remote-root="/usr/src/chktex-action/src/chktex_action" />
+        </list>
+      </option>
+    </PathMappingSettings>
+    <option name="REDIRECT_OUTPUT" value="true" />
+    <option name="SUSPEND_AFTER_CONNECT" value="false" />
+    <method v="2" />
+  </configuration>
+</component>

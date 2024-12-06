@@ -5,9 +5,12 @@ requires-python = ">=3.13"
 [tool.black]
 line-length = 88
 
+[tool.isort]
+profile = "black"
+
 [tool.poetry]
 name = "chktex-action"
-version = "2.0.0"
+version = "2.1.0"
 description = "Lint your LaTeX files with ChkTeX"
 authors = ["Jeremy Kun <j2kun@users.noreply.github.com>", "Martin Kedmenec"]
 readme = "README.md"
@@ -20,6 +23,9 @@ pygithub = "^2.5.0"
 flake8 = "^7.1.1"
 pylint = "^3.3.1"
 ruff = "^0.8.1"
+pydevd-pycharm = ">=243.21565.199,<243.21566.0"
+isort = "^5.13.2"
+mypy = "^1.13.0"
 
 [build-system]
 requires = ["poetry-core"]
